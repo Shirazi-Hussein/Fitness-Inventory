@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Aug 15 12:10:06 2020
+Created on Sat Aug 15 13:31:16 2020
 
 @author: truet
 """
@@ -22,36 +22,35 @@ def get_availability_barbells(url):
     soup = get_soup(url)
     results = []
     #container for plates 
-    container = soup.find('div', {'class':'container product-detail product-wrapper'})
-    with contextlib.suppress(AttributeError):
-        title = container.find('span', {'class':'h1 product-name'}).text.strip()
-        price = container.find('span', {'class':'sales'}).text.strip()
-        stock = container.find('span', {'class':'availability-msg'}).span.text.strip()
-        title, price, stock = title, price, stock
-        results.append(dict(title = title, price = price, stock = stock, url = url))
+    container = soup.find_all('li', {'class':'Odd'})
+    for cont in container:
+        with contextlib.suppress(AttributeError):
+            title = cont.find('a', {'class':'pname'}).text.strip()
+            price = cont.find('em', {'class':'p-price'}).text.strip()
+            stock = cont.find('div', {'class':'ProductActionAdd'}).text.strip()
+            if stock == "Add To Cart":
+                stock = "In Stock"
+            title, price, stock = title, price, stock
+            results.append(dict(title = title, price = price, stock = stock, url = url))
     return results
     
 
 def main():
-    url = "https://www.titan.fitness/strength/barbells/"
-    soup = get_soup(url)
-    urls = ['https://www.titan.fitness/strength/barbells/' + a['href'] for a in soup('a', 'gtm-product-list')]
-    with ThreadPoolExecutor(max_workers=len(urls)) as pool:
-        results = pool.map(get_availability_barbells, urls)
+    url = ['https://www.xmarkfitness.com/bars/']
+    with ThreadPoolExecutor(max_workers=len(url)) as pool:
+        results = pool.map(get_availability_barbells, url)
     results = sum(results, [])
     results = pd.DataFrame(results)
-    #view only available products
+    #how to view only in stock items
 # =============================================================================
 #     for item in results.index:
 #         if results['stock'][item] == "In Stock":
 #             print(results['title'][item], results['price'][item])
 # =============================================================================
     print(results)
-    
         
     
 if __name__ == "__main__":
     main()
-
 
 

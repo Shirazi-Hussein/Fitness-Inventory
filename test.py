@@ -8,37 +8,36 @@ import contextlib
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
 
-import bs4
+
 import requests
+import bs4
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
-def get_soup(url):
-    """get soup of url"""
-    r = requests.get(url)
-    soup = bs4.BeautifulSoup(r.content, 'lxml')
-    return soup
 
-def get_availability_barbells(url):
-    """get availability of each barbell item"""
-    soup = get_soup(url)
-    results = []
-    #container for plates 
-    container = soup.find('div', {'class':'container product-detail product-wrapper'})
-    with contextlib.suppress(AttributeError):
-        title = container.find('span', {'class':'h1 product-name'}).text.strip()
-        price = container.find('span', {'class':'sales'}).text.strip()
-        stock = container.find('span', {'class':'availability-msg'}).span.text.strip()
-        title, price, stock = title, price, stock
-        results.append(dict(title = title, price = price, stock = stock, url = url))
-    return results
-    
+url = 'https://americanbarbell.com/collections/weights'
+r = requests.get(url)
+soup = bs4.BeautifulSoup(r.content, 'lxml')
 
-def main():
-    url = "https://www.titan.fitness/strength/barbells/"
-    soup = get_soup(url)
-    urls = ['https://www.titan.fitness/strength/barbells/' + a['href'] for a in soup('a', 'gtm-product-list')]
-    print(urls)
-    
+containers = soup.find_all('div', {'class':'inner product-item'})
+results = []
+for c in containers:
+    with contextlib.suppress(TypeError):
+        if c.find('strong', {'class':'label sold-out-label'}):
+            s = "Out of stock"
+        else:
+            s = "In stock"
+        t = c.find('a', {'class':'product-title'}).text.strip()
+        p = c.find('div', {'class':'price-regular'}).text.strip()
+        u = c.find('a', {'class':'product-grid-image'})['href']
+        u = 'https://americanbarbell.com' + u
+        i = c.find('img').get('data-src')
+        i = 'https:' + i
+        stock, title, price, url, image_url = s, t, p, u, i
+    results.append(dict(title = t, price = p, stock = s, url = u, company = 'Amerian Barbell', p_type = 'plates', img_url = i))
+
         
-    
-if __name__ == "__main__":
-    main()
+
+results = pd.DataFrame(results)
+print(results)
