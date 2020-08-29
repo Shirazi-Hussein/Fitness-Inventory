@@ -27,8 +27,9 @@ def get_availability_barbells(url):
         product_title = barbell.find('h1', {'itemprop':'name'}).text.strip()
         price = barbell.find('span', {'class':'price'}).text.strip()
         stock = barbell.find('div', {'class':'product-info'}).p.text.strip()
-        product_title, price, stock, url = product_title, price, stock, url
-        results.append(dict(product_title = product_title, price = price, stock = stock, url = url))
+        img_url = soup.find('img', {'class':'img-responsive'})['src']
+        results.append(dict(product_title = product_title, price = price, stock = stock, url = url,
+                            company = 'Repfitness', p_type = 'Barbells', img_url = img_url))
     return results
 
 def main():
@@ -39,11 +40,6 @@ def main():
         results = pool.map(get_availability_barbells, urls)
     results = sum(results, [])
     results = pd.DataFrame(results)
-# =============================================================================
-#     for item in results.index:
-#         if results['stock'][item] != "Notify Me":
-#             print(results['product_title'][item], results['price'][item])
-# =============================================================================
     print(results)
 
     

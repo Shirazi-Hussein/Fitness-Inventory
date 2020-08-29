@@ -17,35 +17,18 @@ def get_soup(url):
     soup = bs4.BeautifulSoup(r.content, 'lxml')
     return soup
 
-def get_availability_barbells(url):
-    """get availability of each barbell item"""
-    soup = get_soup(url)
-    results = []
-    #container for barbell type 1 
-    barbell1 = soup.find('div', {'class':'product-shop-accessories'})
-    with contextlib.suppress(AttributeError):
-        product_title1 = barbell1.find('h1', {'class':'product-title'}).text.strip()
-        price1 = barbell1.find('span', {'class':'price'}).text.strip()
-        stock1 = soup.find('div', 'bin-stock-availability').div.div.text.strip()
-        product_title, price, stock, url = product_title1, price1, stock1, url
-        results.append(dict(product_title = product_title, price = price, stock = stock, url = url))
-    #container for barbell types 2
-    barbell2 = soup.find('div', {'class':'product-shop'})
-    with contextlib.suppress(AttributeError):
-        product_title2 = barbell2.find('h1', {'class':'product-title'}).text.strip()
-        price2 = barbell2.find('span', {'class':'price'}).text.strip()
-        stock2 = soup.find('div', 'bin-stock-availability').div.div.text.strip()
-        product_title, price, stock = product_title2, price2, stock2
-        results.append(dict(product_title = product_title2, price = price2, stock = stock2, url = url))
-    return results
-
 def main():
-    url = "https://www.roguefitness.com/weightlifting-bars-plates/barbells?limit=160"
+    url = "https://www.roguefitness.com/weightlifting-bars-plates/barbells?is_salable[0]=1&limit=160"
     soup = get_soup(url)
-    urls = [a['href'] for a in soup('a', 'product-image')]
-    with ThreadPoolExecutor(max_workers=len(urls)) as pool:
-        results = pool.map(get_availability_barbells, urls)
-    results = sum(results, [])
+    container = soup.find_all('li', {'class':'item'})
+    results = []
+    for c in container:
+        product_title = c.find('h2', {'class':'product-name'}).text.strip()
+        price = c.find('span', {'class':'price'}).text.strip()
+        img_url = c.find('a', 'product-image').img['src']
+        stock = "In Stock"
+        results.append(dict(product_title = product_title, price = price, stock = stock, url = url, 
+                            company = "Rogue Fitness", p_type = "Barbells", img_url = img_url))
     results = pd.DataFrame(results)
     print(results)
 

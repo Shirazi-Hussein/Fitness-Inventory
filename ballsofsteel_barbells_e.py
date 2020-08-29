@@ -45,7 +45,6 @@ def get_availability_barbells(url):
             pass
         else:
             stock = 'In Stock'
-        product_title, price, stock, url, company, p_type, img_url = product_title, price, stock, url, company, p_type, img_url
         results.append(dict(product_title = product_title, price = price, stock = stock, url = url, company = company, p_type = p_type, img_url = img_url))
         return results
     

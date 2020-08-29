@@ -32,11 +32,12 @@ def main():
                 u = 'https://americanbarbell.com' + u
                 i = c.find('img').get('data-src')
                 i = 'https:' + i
-        results.append(dict(title = t, price = p, stock = s, url = u, company = 'Amerian Barbell', p_type = 'plates', img_url = i))
+        results.append(dict(title = t, price = p, stock = s, url = u, company = 'Amerian Barbell',
+                            p_type = 'plates', img_url = i))
     results = pd.DataFrame(results)
     print(results)
 
-    
+
         
     
 if __name__ == "__main__":

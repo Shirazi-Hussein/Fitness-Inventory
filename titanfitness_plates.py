@@ -24,27 +24,34 @@ def get_availability_plates(url):
     #container for plates 
     container = soup.find('div', {'class':'container product-detail product-wrapper'})
     with contextlib.suppress(AttributeError):
-        title = container.find('span', {'class':'h1 product-name'}).text.strip()
+        title = soup.find('span', {'class':'h1 product-name'}).text.strip()
         price = container.find('span', {'class':'sales'}).text.strip()
         stock = container.find('span', {'class':'availability-msg'}).span.text.strip()
-        title, price, stock = title, price, stock
-        results.append(dict(title = title, price = price, stock = stock, url = url))
+        if stock == 'Backorder':
+            stock = 'Out of Stock'
+        img_url = soup.find('img', {'class':'d-block img-fluid'})['src']
+        results.append(dict(title = title, price = price, stock = stock, url = url,
+                            company = "Titan Fitness", p_type = 'Plates', img_url = img_url))
     return results
-    
+
+def checkIfDuplicates_1(listOfElems):
+    ''' Check if given list contains any duplicates '''    
+    for elem in listOfElems:
+        if elem in listOfElems:
+            listOfElems.remove(elem)
+        else:
+            pass        
+
 
 def main():
     url = "https://www.titan.fitness/strength/weight-plates/"
     soup = get_soup(url)
     urls = ['https://www.titan.fitness/strength/weight-plates/' + a['href'] for a in soup('a', 'gtm-product-list')]
+    checkIfDuplicates_1(urls)
     with ThreadPoolExecutor(max_workers=len(urls)) as pool:
         results = pool.map(get_availability_plates, urls)
     results = sum(results, [])
     results = pd.DataFrame(results)
-# =============================================================================
-#     for item in results.index:
-#         if results['stock'][item] == "In Stock":
-#             print(results['title'][item], results['price'][item])
-# =============================================================================
     print(results)
     
         

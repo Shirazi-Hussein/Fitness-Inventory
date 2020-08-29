@@ -23,18 +23,18 @@ def get_availability_barbells(url):
     results = []
     #container for barbell
     with contextlib.suppress(AttributeError):
-        product_title1 = soup.find('h1', {'class':'product-title'}).text.strip()
-        price1 = soup.find('span', {'class':'price'}).text.strip()
-        if price1 == '$ 0.00':
-            stock1 = "Out of stock"
+        product_title = soup.find('h1', {'class':'product-title'}).text.strip()
+        price = soup.find('span', {'class':'price'}).text.strip()
+        if price == '$ 0.00':
+            stock = "Out of stock"
         else:
-            stock1 = "In stock"
+            stock = "In stock"
         company = 'American Barbell'
         p_type = 'Barbell'
         img_url = soup.find('a', {'class':'fancybox'})['href']
         img_url = 'https:' + img_url
-        product_title, price, stock, url, company, p_type, img_url = product_title1, price1, stock1, url, company, p_type, img_url
-        results.append(dict(product_title = product_title, price = price, stock = stock, url = url, company = company, p_type = p_type, img_url = img_url))
+        results.append(dict(product_title = product_title, price = price, stock = stock, url = url, company = company,
+                            p_type = p_type, img_url = img_url))
     return results
 
 #check
@@ -46,7 +46,7 @@ def main():
         results = pool.map(get_availability_barbells, urls)
     results = sum(results, [])
     results = pd.DataFrame(results)
-    return(results)
+    print(results)
 
     
         

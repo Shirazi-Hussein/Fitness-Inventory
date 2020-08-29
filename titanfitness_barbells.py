@@ -27,25 +27,30 @@ def get_availability_barbells(url):
         title = container.find('span', {'class':'h1 product-name'}).text.strip()
         price = container.find('span', {'class':'sales'}).text.strip()
         stock = container.find('span', {'class':'availability-msg'}).span.text.strip()
-        title, price, stock = title, price, stock
-        results.append(dict(title = title, price = price, stock = stock, url = url))
+        if stock == "Backorder":
+            stock = "Out of stock"
+        img_url = soup.find('img', {'class':'d-block img-fluid'})['src']
+        results.append(dict(title = title, price = price, stock = stock, url = url,
+                            company = 'Titan Fitness', p_type = 'barbells', img_url = img_url))
     return results
-    
+
+def checkIfDuplicates_1(listOfElems):
+    ''' Check if given list contains any duplicates '''    
+    for elem in listOfElems:
+        if elem in listOfElems:
+            listOfElems.remove(elem)
+        else:
+            pass        
 
 def main():
     url = "https://www.titan.fitness/strength/barbells/"
     soup = get_soup(url)
     urls = ['https://www.titan.fitness/strength/barbells/' + a['href'] for a in soup('a', 'gtm-product-list')]
+    checkIfDuplicates_1(urls)
     with ThreadPoolExecutor(max_workers=len(urls)) as pool:
         results = pool.map(get_availability_barbells, urls)
     results = sum(results, [])
     results = pd.DataFrame(results)
-    #view only available products
-# =============================================================================
-#     for item in results.index:
-#         if results['stock'][item] == "In Stock":
-#             print(results['title'][item], results['price'][item])
-# =============================================================================
     print(results)
     
         

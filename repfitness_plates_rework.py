@@ -21,20 +21,18 @@ def get_availability_plates(url):
     """get availability of each barbell item"""
     soup = get_soup(url)
     results = []
-    #edit below ----------------------------------------------------------------
-    container = soup.find('div', {'class': 'product-shop col-sm-4'})
-    for item in container.find_all("tr"):
-        with contextlib.suppress(AttributeError):
-            product_title = item.contents[0].text.strip()
-            price = item.find_next('td').find_next('td').div.div.span.text.strip()
-            stock = item.find_next('td').find_next('td').find_next('td').p
-            stock2 = 
-            if stock != None:
-                stock = "Out of Stock"
-            elif stock == None:
-                stock = "In Stock"
-            product_title, price, stock, url = product_title, price, stock, url
-            results.append(dict(product_title = product_title, price = price, stock = stock, url = url))
+    with contextlib.suppress(AttributeError):
+        product_title = soup.find('div', {'class':'product-name'}).text.strip()
+        price = 'Varies'
+        stock = soup.find('div', {'class':'product-info'}).p.text.strip()
+        if stock == 'Availability: Out of stock':
+            stock = "Out of Stock"
+        if stock == 'Availability: In stock':
+            stock = "In Stock"
+        else:
+            pass
+        img_url = soup.find('img', {'class':'img-responsive'})['src']
+        results.append(dict(product_title = product_title, price = price, stock = stock, url = url, company = 'Repfitness', p_type = 'Plates', img_url = img_url))
     return results
 
 def main():

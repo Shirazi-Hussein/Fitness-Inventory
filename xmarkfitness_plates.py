@@ -30,8 +30,9 @@ def get_availability_plates(url):
             stock = cont.find('div', {'class':'ProductActionAdd'}).text.strip()
             if stock == "Add To Cart":
                 stock = "In Stock"
-            title, price, stock = title, price, stock
-            results.append(dict(title = title, price = price, stock = stock, url = url))
+            img_url = cont.find('div', {'class':'ProductImage QuickView'}).a.img['src']
+            results.append(dict(title = title, price = price, stock = stock, url = url,
+                                company = 'Xmark Fitness', p_type = 'Plates', img_url = img_url))
     return results
     
 
@@ -41,12 +42,6 @@ def main():
         results = pool.map(get_availability_plates, urls)
     results = sum(results, [])
     results = pd.DataFrame(results)
-    #how to view only in stock items
-# =============================================================================
-#     for item in results.index:
-#         if results['stock'][item] == "In Stock":
-#             print(results['title'][item], results['price'][item])
-# =============================================================================
     print(results)
         
     
