@@ -30,11 +30,5 @@ def main():
         results.append(dict(product_title = product_title, price = price, stock = stock, url = url, 
                             company = "Rogue Fitness", p_type = "Barbells", img_url = img_url))
     results = pd.DataFrame(results)
-    print(results)
-
-    
-        
-    
-if __name__ == "__main__":
-    main()
+    return results
 

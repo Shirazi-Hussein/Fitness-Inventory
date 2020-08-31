@@ -31,7 +31,10 @@ def get_availability_plates(url):
             stock = "In Stock"
         else:
             pass
-        img_url = soup.find('img', {'class':'img-responsive'})['src']
+        try:
+            img_url = soup.find('img', {'class':'img-responsive'})['src']
+        except:
+            img_url = None
         results.append(dict(product_title = product_title, price = price, stock = stock, url = url, company = 'Repfitness', p_type = 'Plates', img_url = img_url))
     return results
 
@@ -43,12 +46,4 @@ def main():
         results = pool.map(get_availability_plates, urls)
     results = sum(results, [])
     results = pd.DataFrame(results)
-    print(results)
-
-    
-        
-    
-if __name__ == "__main__":
-    main()
-
-
+    return results

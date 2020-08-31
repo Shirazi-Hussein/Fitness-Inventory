@@ -58,12 +58,9 @@ def main():
         results = pool.map(get_availability_plate, urls)
     results = sum(results, [])
     results = pd.DataFrame(results)
-    print(results)
+    return results
 
     
-        
-    
-if __name__ == "__main__":
-    main()
+
 
 

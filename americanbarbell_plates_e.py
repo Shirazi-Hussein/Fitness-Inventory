@@ -35,12 +35,6 @@ def main():
         results.append(dict(title = t, price = p, stock = s, url = u, company = 'Amerian Barbell', 
                             p_type = 'plates', img_url = i))
     results = pd.DataFrame(results)
-    print(results)
-
-    
-        
-    
-if __name__ == "__main__":
-    main()
+    return results
 
 

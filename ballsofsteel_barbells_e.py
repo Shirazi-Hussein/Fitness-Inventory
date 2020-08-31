@@ -56,10 +56,4 @@ def main():
         results = pool.map(get_availability_barbells, urls)
     results = sum(results, [])
     results = pd.DataFrame(results)
-    print(results)
-
-    
-        
-    
-if __name__ == "__main__":
-    main()
+    return results

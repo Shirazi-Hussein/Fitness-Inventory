@@ -43,6 +43,6 @@ def main():
     results = sum(results, [])
     results = pd.DataFrame(results)
     print(results)
-
-if __name__ == '__main__':
+    
+if __name__ == "__main__":
     main()
