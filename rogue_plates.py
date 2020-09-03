@@ -9,25 +9,15 @@ import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
 
 import bs4
-import requests
-import time
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from requests_html import HTMLSession
 
 pd.options.display.max_columns = 500
 
 def get_soup(url):
     """get soup of url"""
-    options = Options()
-    options.add_argument('--headless')
-    options.add_argument('--disable-gpu')
-    options.add_argument('--no-sandbox')
-    driver = webdriver.Chrome(chrome_options=options)
-    driver.get(url)
-    time.sleep(3)
-    page = driver.page_source
-    driver.quit()
-    soup = bs4.BeautifulSoup(page, 'lxml')
+    session = HTMLSession()
+    r = session.get(url)
+    soup = bs4.BeautifulSoup(r.content, 'lxml')
     return soup
 
 def get_availability_plates(url):

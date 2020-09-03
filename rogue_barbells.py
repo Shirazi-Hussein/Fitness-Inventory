@@ -11,21 +11,13 @@ from concurrent.futures import ThreadPoolExecutor
 import bs4
 import requests
 import time
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from requests_html import HTMLSession
 
 def get_soup(url):
     """get soup of url"""
-    options = Options()
-    options.add_argument('--headless')
-    options.add_argument('--disable-gpu')
-    options.add_argument('--no-sandbox')
-    driver = webdriver.Chrome(chrome_options=options)
-    driver.get(url)
-    time.sleep(3)
-    page = driver.page_source
-    driver.quit()
-    soup = bs4.BeautifulSoup(page, 'lxml')
+    session = HTMLSession()
+    r = session.get(url)
+    soup = bs4.BeautifulSoup(r.content, 'lxml')
     return soup
 
 def main():
@@ -37,6 +29,7 @@ def main():
         product_title = c.find('h2', {'class':'product-name'}).text.strip()
         price = c.find('span', {'class':'price'}).text.strip()
         img_url = c.find('a', 'product-image').img['src']
+        url = c.find('a', {'class':'product-image'})['href']
         stock = "In Stock"
         results.append(dict(product_title = product_title, price = price, stock = stock, url = url, 
                             company = "Rogue Fitness", p_type = "Barbells", img_url = img_url))
