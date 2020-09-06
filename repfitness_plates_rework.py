@@ -35,7 +35,7 @@ def get_availability_plates(url):
             img_url = soup.find('img', {'class':'img-responsive'})['src']
         except:
             img_url = None
-        results.append(dict(product_title = product_title, price = price, stock = stock, url = url, company = 'Repfitness', p_type = 'Plates', img_url = img_url))
+        results.append(dict(p_title = product_title, price = price, stock = stock, url = url, company = 'Repfitness', p_type = 'Plates', img_url = img_url))
     return results
 
 def main():

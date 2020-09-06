@@ -30,7 +30,7 @@ def get_availability_barbells(url):
         if stock == "Backorder":
             stock = "Out of stock"
         img_url = soup.find('img', {'class':'d-block img-fluid'})['src']
-        results.append(dict(title = title, price = price, stock = stock, url = url,
+        results.append(dict(p_title = title, price = price, stock = stock, url = url,
                             company = 'Titan Fitness', p_type = 'barbells', img_url = img_url))
     return results
 

@@ -31,7 +31,7 @@ def get_availability_plates(url):
             price = item.find('span', {'class':'price'}).text.strip()
             img_url = soup.find('div', {'class':'prod-header-img'}).img['src']
             if availability != 'Notify Me':
-                results.append(dict(name=name, price = price, stock=availability, url=url,
+                results.append(dict(p_title=name, price = price, stock=availability, url=url,
                                     company = 'Rogue Fitness', p_type = 'Plates', img_url = img_url))  
     return results
 

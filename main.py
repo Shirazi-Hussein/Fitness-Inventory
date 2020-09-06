@@ -46,18 +46,18 @@ def xmf():
     xmf_p = xmarkfitness_plates.main()
     xmf_b.to_csv('out11.csv')
     xmf_p.to_csv('out12.csv')
+
+def combine_csv():
+    extension = 'csv'
+    all_filenames = [i for i in glob.glob('*.{}'.format(extension))]
+    combined_csv = pd.concat([pd.read_csv(f) for f in all_filenames ])
+    combined_csv.to_csv("combined_csv.csv", index=False, encoding='utf-8-sig')
     
 if __name__ == '__main__':
     threads = [Thread(target=t) for t in (ab, bos, rf, r, tf, xmf)]
     os.chdir("data")
     for thread in threads:
         thread.start()
-    extension = 'csv'
-    all_filenames = [i for i in glob.glob('*.{}'.format(extension))]
     for thread in threads:
         thread.join()
-    combined_csv = pd.concat([pd.read_csv(f) for f in all_filenames ])
-    combined_csv.to_csv( "combined_csv.csv", index=False, encoding='utf-8-sig')
-    
-    
-    
+    combine_csv()

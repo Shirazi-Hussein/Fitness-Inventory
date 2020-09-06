@@ -25,7 +25,7 @@ def get_availability_barbells(url):
         company = 'Bells Of Steel'
         p_type = 'Plates'
         img_url = soup.find('a', 'avada-product-gallery-lightbox-trigger')['href']
-        return dict(product_title = product_title, price = price, stock = stock, url = url, company = company, p_type = p_type, img_url = img_url)
+        return dict(p_title = product_title, price = price, stock = stock, url = url, company = company, p_type = p_type, img_url = img_url)
 
 url = 'https://www.bellsofsteel.com/barbells-and-plates/weight-plates/'
 session = requests.session()

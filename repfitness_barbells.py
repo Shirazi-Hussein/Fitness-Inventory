@@ -27,8 +27,12 @@ def get_availability_barbells(url):
         product_title = barbell.find('h1', {'itemprop':'name'}).text.strip()
         price = barbell.find('span', {'class':'price'}).text.strip()
         stock = barbell.find('div', {'class':'product-info'}).p.text.strip()
+        if stock == "Availability: Out of stock":
+            stock = "Out of stock"
+        if stock == "Availability: In stock":
+            stock = "In stock"
         img_url = soup.find('img', {'class':'img-responsive'})['src']
-        results.append(dict(product_title = product_title, price = price, stock = stock, url = url,
+        results.append(dict(p_title = product_title, price = price, stock = stock, url = url,
                             company = 'Repfitness', p_type = 'Barbells', img_url = img_url))
     return results
 

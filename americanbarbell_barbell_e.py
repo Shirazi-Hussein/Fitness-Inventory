@@ -23,7 +23,7 @@ def get_availability_barbells(url):
     results = []
     #container for barbell
     with contextlib.suppress(AttributeError):
-        product_title = soup.find('h1', {'class':'product-title'}).text.strip()
+        p_title = soup.find('h1', {'class':'product-title'}).text.strip()
         price = soup.find('span', {'class':'price'}).text.strip()
         if price == '$ 0.00':
             stock = "Out of stock"
@@ -33,7 +33,7 @@ def get_availability_barbells(url):
         p_type = 'Barbell'
         img_url = soup.find('a', {'class':'fancybox'})['href']
         img_url = 'https:' + img_url
-        results.append(dict(product_title = product_title, price = price, stock = stock, url = url, company = company,
+        results.append(dict(p_title = p_title, price = price, stock = stock, url = url, company = company,
                             p_type = p_type, img_url = img_url))
     return results
 

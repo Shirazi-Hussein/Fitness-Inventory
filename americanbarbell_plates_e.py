@@ -32,7 +32,7 @@ def main():
                 u = 'https://americanbarbell.com' + u
                 i = c.find('img').get('data-src')
                 i = 'https:' + i
-        results.append(dict(title = t, price = p, stock = s, url = u, company = 'Amerian Barbell', 
+        results.append(dict(p_title = t, price = p, stock = s, url = u, company = 'Amerian Barbell', 
                             p_type = 'plates', img_url = i))
     results = pd.DataFrame(results)
     return results

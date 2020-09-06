@@ -31,7 +31,7 @@ def main():
         img_url = c.find('a', 'product-image').img['src']
         url = c.find('a', {'class':'product-image'})['href']
         stock = "In Stock"
-        results.append(dict(product_title = product_title, price = price, stock = stock, url = url, 
+        results.append(dict(p_title = product_title, price = price, stock = stock, url = url, 
                             company = "Rogue Fitness", p_type = "Barbells", img_url = img_url))
     results = pd.DataFrame(results)
     return results

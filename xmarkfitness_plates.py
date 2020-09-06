@@ -31,7 +31,7 @@ def get_availability_plates(url):
             if stock == "Add To Cart":
                 stock = "In Stock"
             img_url = cont.find('div', {'class':'ProductImage QuickView'}).a.img['src']
-            results.append(dict(title = title, price = price, stock = stock, url = url,
+            results.append(dict(p_title = title, price = price, stock = stock, url = url,
                                 company = 'Xmark Fitness', p_type = 'Plates', img_url = img_url))
     return results
     

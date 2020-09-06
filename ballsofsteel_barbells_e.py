@@ -23,7 +23,7 @@ def get_availability_barbells(url):
             pass
         else:
             stock = 'In Stock'
-        return dict(product_title = product_title, price = price, stock = stock, url = url, company = company, p_type = p_type, img_url = img_url)
+        return dict(p_title = product_title, price = price, stock = stock, url = url, company = company, p_type = p_type, img_url = img_url)
 
 url = 'https://www.bellsofsteel.com/barbells-and-plates/barbells/'
 session = requests.session()
