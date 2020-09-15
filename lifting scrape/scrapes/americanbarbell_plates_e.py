@@ -20,10 +20,13 @@ def main():
     soup = get_soup(url)
     containers = soup.find_all('div', {'class':'inner product-item'})
     results = []
+    s, t, p, u, i = None, None, None, None, None
     for c in containers:
         with contextlib.suppress(TypeError):
             if c.find('strong', {'class':'label sold-out-label'}):
                 s = "Out of stock"
+            if c.find('a', {'class':'product-title'}).text.strip() == 'Color KG Urethane Pro Series Plates' or c.find('a', {'class':'product-title'}).text.strip() == 'Multiple Adjustable Bench 0-75 Degree - Black Upholstery':
+                continue
             else:
                 s = "In stock"
                 t = c.find('a', {'class':'product-title'}).text.strip()
@@ -36,5 +39,3 @@ def main():
                             p_type = 'plates', img_url = i))
     results = pd.DataFrame(results)
     return results
-
-

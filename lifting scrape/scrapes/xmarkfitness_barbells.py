@@ -30,6 +30,7 @@ def get_availability_barbells(url):
             stock = cont.find('div', {'class':'ProductActionAdd'}).text.strip()
             if stock == "Add To Cart":
                 stock = "In Stock"
+            url = cont.find('div', {'class':'ProductImage QuickView'}).a['href'].strip()
             img_url = cont.find('div', {'class':'ProductImage QuickView'}).a.img['src']
             results.append(dict(p_title = title, price = price, stock = stock, url = url,
                                 company = 'Xmark Fitness', p_type = 'Barbells', img_url = img_url))
