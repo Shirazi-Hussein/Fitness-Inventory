@@ -26,11 +26,15 @@ def get_availability_plates(url):
     results = []
     for item in soup('div', 'grouped-item'):
         with contextlib.suppress(AttributeError):
-            name = item.find('div', 'item-name').text.strip()
-            availability = item.find('div', 'bin-stock-availability').text.strip()
-            price = item.find('span', {'class':'price'}).text.strip()
-            img_url = soup.find('div', {'class':'prod-header-img'}).img['src']
-            if availability != 'Notify Me':
+            if item.find('div', {'class':'bin-out-of-stock-message bin-out-of-stock-default'}):
+                pass
+            elif item.find('button', {'title':'Notify Me'}):
+                pass
+            else:
+                name = item.find('div', {'class':'item-name'}).text.strip()
+                availability = "In stock"
+                price = item.find('span', {'class':'price'}).text.strip()
+                img_url = soup.find('div', {'class':'prod-header-img'}).img['src']
                 results.append(dict(p_title=name, price = price, stock=availability, url=url,
                                     company = 'Rogue Fitness', p_type = 'Plates', img_url = img_url))  
     return results
@@ -44,3 +48,4 @@ def main():
     results = sum(results, [])
     results = pd.DataFrame(results)
     return results
+
