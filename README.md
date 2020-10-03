@@ -1,6 +1,6 @@
 https://www.fitnessinventory.info/
 
-#How it works:
+# How it works:
 There are 12 individual python scripts that scrape the products from 6 different fitness suppliers, 2 scripts for each one. 1 for the barbell items, the other for plate items.
 Each file supports threading and uses BS4 alongside requests, or for websites like Rogue Fitness that places limits on bots, I've had to switch to an alternative that better 
 mimicked a real user. Selenium was the next choice, but I soon found out that it didn't support threading, so I abandoned it. There's an overhead file called main.py that 
