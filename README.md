@@ -1,10 +1,7 @@
 https://www.fitnessinventory.info/
 
-# How it works:
-There are 12 individual python scripts that scrape the products from 6 different fitness suppliers, 2 scripts for each one. 1 for the barbell items, the other for plate items.
-Each file supports threading and uses BS4 alongside requests, or for websites like Rogue Fitness that places limits on bots, I've had to switch to an alternative that better 
-mimicked a real user. Selenium was the next choice, but I soon found out that it didn't support threading, so I abandoned it. There's an overhead file called main.py that 
-executes all 12 scripts and combines them into a single CSV file. Without threading, the process would take maybe 8 minutes. With threading, its around 45 seconds to a minute 30.
-
-It's deployed via Flask, a micro-framework. I thought it was more suitable than Django given the simplicity of the project. It's currently hosted on Google Cloud Platform and 
-the domain was pretty cheap on Google Domains. 
+# About
+After COVID hit and gyms closed, it left people without any effective way to weightlift for months to come. Everyone flocked to online retailers and bought their stocks of weight
+plates and barbells, turning fitness into a rat race of who can stay up at 2am and checkout on a new set of bumper plates the fastest. With multiple retailers and different types
+of plates, it was a toll to finally find some gym equipment that was both affordable and in stock. I decided to settle the problem myself by data scraping several of the most
+popular retailers and displaying only the products that are on sale right now. I brought up the website to a few fitness forums like r/Homegyms, which was recieved warmly. 
