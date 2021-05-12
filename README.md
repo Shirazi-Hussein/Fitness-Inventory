@@ -1,4 +1,4 @@
-https://www.fitnessinventory.info/ (Currently updating the front-end design, it'll be back shortly.)
+https://www.fitnessinventory.info/ (Currently updating the front-end design, new design will be live soon.)
 
 # About
 After COVID hit and gyms closed, it left people without any effective way to weightlift for months to come. Everyone flocked to online retailers and bought their stocks of weight
